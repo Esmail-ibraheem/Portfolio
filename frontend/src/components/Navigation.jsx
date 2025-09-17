@@ -6,10 +6,26 @@ import { personalInfo } from '../mock';
 const Navigation = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [activeSection, setActiveSection] = useState('home');
 
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 50);
+      
+      // Update active section based on scroll position
+      const sections = ['home', 'publications', 'projects', 'experience', 'skills', 'contact'];
+      const current = sections.find(section => {
+        const element = document.getElementById(section);
+        if (element) {
+          const rect = element.getBoundingClientRect();
+          return rect.top <= 100 && rect.bottom >= 100;
+        }
+        return false;
+      });
+      
+      if (current) {
+        setActiveSection(current);
+      }
     };
 
     window.addEventListener('scroll', handleScroll);
@@ -19,7 +35,15 @@ const Navigation = () => {
   const scrollToSection = (sectionId) => {
     const element = document.getElementById(sectionId);
     if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
+      // Account for sticky header height (80px) + some padding
+      const headerOffset = 100;
+      const elementPosition = element.getBoundingClientRect().top;
+      const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+      
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: 'smooth'
+      });
       setIsMobileMenuOpen(false);
     }
   };
@@ -43,8 +67,15 @@ const Navigation = () => {
         <div className="flex items-center justify-between h-20">
           {/* Logo */}
           <div 
-            className="text-2xl font-bold cursor-pointer hover:text-[#00FFD1] transition-colors"
+            className="text-2xl font-bold cursor-pointer hover:text-[#00FFD1] transition-colors focus-visible:outline-2 focus-visible:outline-[#00FFD1] focus-visible:outline-offset-2 rounded"
             onClick={() => scrollToSection('home')}
+            tabIndex={0}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                scrollToSection('home');
+              }
+            }}
           >
             EG.
           </div>
@@ -55,7 +86,11 @@ const Navigation = () => {
               <button
                 key={link.id}
                 onClick={() => scrollToSection(link.id)}
-                className="text-[#4D4D4D] hover:text-white transition-colors duration-300 text-lg"
+                className={`transition-colors duration-300 text-lg focus-visible:outline-2 focus-visible:outline-[#00FFD1] focus-visible:outline-offset-2 rounded px-2 py-1 ${
+                  activeSection === link.id 
+                    ? 'text-[#00FFD1]' 
+                    : 'text-[#4D4D4D] hover:text-white'
+                }`}
               >
                 {link.label}
               </button>
@@ -67,7 +102,7 @@ const Navigation = () => {
             <Button
               variant="outline"
               size="sm"
-              className="bg-white/10 border-white/20 text-white hover:bg-white hover:text-black transition-all duration-300"
+              className="bg-white/10 border-white/20 text-white hover:bg-white hover:text-black transition-all duration-300 focus-visible:ring-2 focus-visible:ring-[#00FFD1] focus-visible:ring-offset-2 focus-visible:ring-offset-black"
               onClick={() => window.open('/cv.pdf', '_blank')}
             >
               <Download className="w-4 h-4 mr-2" />
@@ -77,7 +112,7 @@ const Navigation = () => {
             <Button
               variant="ghost"
               size="sm"
-              className="p-2 text-[#4D4D4D] hover:text-[#00FFD1] hover:bg-[#00FFD1]/10"
+              className="p-2 text-[#4D4D4D] hover:text-[#00FFD1] hover:bg-[#00FFD1]/10 focus-visible:ring-2 focus-visible:ring-[#00FFD1] focus-visible:ring-offset-2 focus-visible:ring-offset-black"
               onClick={() => window.open(personalInfo.github, '_blank')}
             >
               <Github className="w-5 h-5" />
@@ -86,7 +121,7 @@ const Navigation = () => {
             <Button
               variant="ghost"
               size="sm"
-              className="p-2 text-[#4D4D4D] hover:text-[#00FFD1] hover:bg-[#00FFD1]/10"
+              className="p-2 text-[#4D4D4D] hover:text-[#00FFD1] hover:bg-[#00FFD1]/10 focus-visible:ring-2 focus-visible:ring-[#00FFD1] focus-visible:ring-offset-2 focus-visible:ring-offset-black"
               onClick={() => window.open(personalInfo.linkedin, '_blank')}
             >
               <Linkedin className="w-5 h-5" />
@@ -97,7 +132,7 @@ const Navigation = () => {
           <Button
             variant="ghost"
             size="sm"
-            className="md:hidden p-2"
+            className="md:hidden p-2 focus-visible:ring-2 focus-visible:ring-[#00FFD1] focus-visible:ring-offset-2 focus-visible:ring-offset-black"
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
           >
             {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
@@ -112,7 +147,11 @@ const Navigation = () => {
                 <button
                   key={link.id}
                   onClick={() => scrollToSection(link.id)}
-                  className="block w-full text-left text-[#4D4D4D] hover:text-white transition-colors py-2"
+                  className={`block w-full text-left transition-colors py-2 px-2 rounded focus-visible:outline-2 focus-visible:outline-[#00FFD1] focus-visible:outline-offset-2 ${
+                    activeSection === link.id 
+                      ? 'text-[#00FFD1]' 
+                      : 'text-[#4D4D4D] hover:text-white'
+                  }`}
                 >
                   {link.label}
                 </button>
@@ -122,7 +161,7 @@ const Navigation = () => {
                 <Button
                   variant="outline"
                   size="sm"
-                  className="bg-white/10 border-white/20 text-white hover:bg-white hover:text-black"
+                  className="bg-white/10 border-white/20 text-white hover:bg-white hover:text-black focus-visible:ring-2 focus-visible:ring-[#00FFD1] focus-visible:ring-offset-2 focus-visible:ring-offset-black"
                   onClick={() => window.open('/cv.pdf', '_blank')}
                 >
                   <Download className="w-4 h-4 mr-2" />
@@ -133,7 +172,7 @@ const Navigation = () => {
                   <Button
                     variant="ghost"
                     size="sm"
-                    className="flex-1 text-[#4D4D4D] hover:text-[#00FFD1]"
+                    className="flex-1 text-[#4D4D4D] hover:text-[#00FFD1] focus-visible:ring-2 focus-visible:ring-[#00FFD1] focus-visible:ring-offset-2 focus-visible:ring-offset-black"
                     onClick={() => window.open(personalInfo.github, '_blank')}
                   >
                     <Github className="w-5 h-5 mr-2" />
@@ -143,7 +182,7 @@ const Navigation = () => {
                   <Button
                     variant="ghost"
                     size="sm"
-                    className="flex-1 text-[#4D4D4D] hover:text-[#00FFD1]"
+                    className="flex-1 text-[#4D4D4D] hover:text-[#00FFD1] focus-visible:ring-2 focus-visible:ring-[#00FFD1] focus-visible:ring-offset-2 focus-visible:ring-offset-black"
                     onClick={() => window.open(personalInfo.linkedin, '_blank')}
                   >
                     <Linkedin className="w-5 h-5 mr-2" />

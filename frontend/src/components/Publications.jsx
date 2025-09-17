@@ -23,16 +23,19 @@ const Publications = () => {
           {publications.map((pub, index) => (
             <Card 
               key={pub.id} 
-              className={`glass-effect border-white/20 hover:border-[#00FFD1]/50 transition-all duration-400 hover:scale-[1.02] hover:neon-glow animate-slide-up`}
-              style={{ animationDelay: `${index * 0.1}s` }}
+              className={`glass-effect border-white/20 hover:border-[#00FFD1]/50 transition-all duration-400 hover:scale-[1.02] focus-within:ring-2 focus-within:ring-[#00FFD1] focus-within:ring-offset-2 focus-within:ring-offset-black animate-slide-up`}
+              style={{ 
+                animationDelay: `${index * 0.1}s`,
+                boxShadow: '0 0 10px rgba(0, 255, 209, 0.2)'
+              }}
             >
-              <CardHeader className="pb-4">
+              <CardHeader className="pb-3">
                 <div className="flex items-start justify-between gap-4">
                   <div className="flex-1">
-                    <CardTitle className="heading-3 text-white mb-3 leading-tight">
+                    <CardTitle className="heading-3 text-white mb-2 leading-tight">
                       {pub.title}
                     </CardTitle>
-                    <div className="flex items-center gap-3 mb-3">
+                    <div className="flex items-center gap-3 mb-2">
                       <Badge 
                         variant={pub.venue.includes('arXiv') ? 'default' : 'secondary'}
                         className={`${
@@ -51,7 +54,7 @@ const Publications = () => {
               </CardHeader>
               
               <CardContent className="pt-0">
-                <ul className="space-y-2 mb-6">
+                <ul className="space-y-1.5 mb-6">
                   {pub.highlights.map((highlight, idx) => (
                     <li key={idx} className="body-small text-[rgba(255,255,255,0.85)] flex items-start">
                       <span className="text-[#00FFD1] mr-2 mt-1.5 block w-1 h-1 rounded-full bg-[#00FFD1] flex-shrink-0"></span>
@@ -63,7 +66,7 @@ const Publications = () => {
                 <Button
                   variant="ghost"
                   size="sm"
-                  className="text-[#00FFD1] hover:text-white hover:bg-[#00FFD1]/10 p-0 h-auto font-medium"
+                  className="text-[#00FFD1] hover:text-white hover:bg-[#00FFD1]/10 p-0 h-auto font-medium focus-visible:ring-2 focus-visible:ring-[#00FFD1] focus-visible:ring-offset-2 focus-visible:ring-offset-black"
                   onClick={() => window.open(pub.link, '_blank')}
                 >
                   Read paper
@@ -82,7 +85,7 @@ const Publications = () => {
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
             <Button
               variant="outline"
-              className="bg-white/10 border-white/20 text-white hover:bg-white hover:text-black rounded-none"
+              className="bg-white/10 border-white/20 text-white hover:bg-white hover:text-black rounded-none focus-visible:ring-2 focus-visible:ring-[#00FFD1] focus-visible:ring-offset-2 focus-visible:ring-offset-black"
               onClick={() => window.open('https://arxiv.org/search/?query=Esmail+Gumaan&searchtype=author', '_blank')}
             >
               View on arXiv
@@ -90,7 +93,7 @@ const Publications = () => {
             </Button>
             <Button
               variant="outline"
-              className="bg-white/10 border-white/20 text-white hover:bg-white hover:text-black rounded-none"
+              className="bg-white/10 border-white/20 text-white hover:bg-white hover:text-black rounded-none focus-visible:ring-2 focus-visible:ring-[#00FFD1] focus-visible:ring-offset-2 focus-visible:ring-offset-black"
               onClick={() => window.open('https://www.researchgate.net/profile/Esmail-Gumaan', '_blank')}
             >
               View on ResearchGate

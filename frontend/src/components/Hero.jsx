@@ -14,7 +14,15 @@ const Hero = () => {
   const scrollToSection = (sectionId) => {
     const element = document.getElementById(sectionId);
     if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
+      // Account for sticky header height
+      const headerOffset = 100;
+      const elementPosition = element.getBoundingClientRect().top;
+      const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+      
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: 'smooth'
+      });
     }
   };
 
@@ -66,7 +74,8 @@ const Hero = () => {
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-16">
             <Button
               size="lg"
-              className="bg-[#00FFD1] text-black hover:bg-[#00FFD1]/80 border-0 rounded-none px-8 py-4 text-lg font-medium min-h-[56px] transition-all duration-400 hover:scale-102 neon-glow"
+              className="bg-[#00FFD1] text-black hover:bg-[#00FFD1]/90 border-0 rounded-none px-8 py-4 text-lg font-medium min-h-[56px] transition-all duration-400 hover:scale-[1.01] focus-visible:ring-2 focus-visible:ring-[#00FFD1] focus-visible:ring-offset-2 focus-visible:ring-offset-black"
+              style={{ boxShadow: '0 0 10px rgba(0, 255, 209, 0.3)' }}
               onClick={() => scrollToSection('projects')}
             >
               View Projects
@@ -76,19 +85,21 @@ const Hero = () => {
             <Button
               variant="outline"
               size="lg"
-              className="bg-white/10 border-white/20 text-white hover:bg-white hover:text-black rounded-none px-8 py-4 text-lg font-medium min-h-[56px] transition-all duration-400"
+              className="bg-white/10 border-white/20 text-white hover:bg-white hover:text-black rounded-none px-8 py-4 text-lg font-medium min-h-[56px] transition-all duration-400 focus-visible:ring-2 focus-visible:ring-[#00FFD1] focus-visible:ring-offset-2 focus-visible:ring-offset-black"
               onClick={() => scrollToSection('contact')}
             >
               Contact Me
             </Button>
           </div>
 
-          {/* Stats */}
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-8 mb-16">
+          {/* Stats - Mobile optimized */}
+          <div className="flex flex-col md:flex-row items-center justify-center gap-6 mb-16">
             {heroStats.map((stat, index) => (
               <div 
                 key={index} 
-                className="glass-effect rounded-lg px-6 py-4 text-center transition-all duration-300 hover:scale-105 hover:neon-glow"
+                className="glass-effect rounded-lg px-6 py-4 text-center transition-all duration-300 hover:scale-105 focus-within:ring-2 focus-within:ring-[#00FFD1] focus-within:ring-offset-2 focus-within:ring-offset-black"
+                style={{ boxShadow: '0 0 8px rgba(0, 255, 209, 0.2)' }}
+                tabIndex={0}
               >
                 <div className="heading-2 text-[#00FFD1] mb-1">{stat.value}</div>
                 <div className="body-small text-white font-medium mb-1">{stat.label}</div>
@@ -97,11 +108,11 @@ const Hero = () => {
             ))}
           </div>
 
-          {/* Scroll indicator */}
+          {/* Scroll indicator - Ensure it stays above fold on mobile */}
           <div className="animate-bounce">
             <button
               onClick={() => scrollToSection('publications')}
-              className="text-[#4D4D4D] hover:text-[#00FFD1] transition-colors"
+              className="text-[#4D4D4D] hover:text-[#00FFD1] transition-colors focus-visible:outline-2 focus-visible:outline-[#00FFD1] focus-visible:outline-offset-2 rounded p-2"
             >
               <ChevronDown className="w-8 h-8" />
             </button>
