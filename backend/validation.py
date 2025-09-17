@@ -40,7 +40,7 @@ def validate_contact_form(data: Dict[str, Any]) -> Dict[str, List[str]]:
 
 def is_honeypot_filled(data: Dict[str, Any]) -> bool:
     """Check if honeypot field is filled (indicates spam)"""
-    honeypot_fields = ['_topic', 'website', 'url', 'phone']
+    honeypot_fields = ['_topic', 'topic', 'website', 'url', 'phone']
     
     for field in honeypot_fields:
         if data.get(field):
