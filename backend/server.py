@@ -56,7 +56,7 @@ class ContactRequest(BaseModel):
     email: str = Field(..., pattern=r'^[a-zA-Z0-9.!#$%&\'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$')
     message: str = Field(..., min_length=1, max_length=2000)
     consent: bool = Field(..., description="User must consent to data processing")
-    _topic: Optional[str] = Field(default="", description="Honeypot field")
+    topic: Optional[str] = Field(default="", description="Honeypot field", alias="_topic")
 
     @validator('name', 'message')
     def sanitize_text_fields(cls, v):
