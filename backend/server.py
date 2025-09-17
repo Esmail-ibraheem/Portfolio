@@ -53,7 +53,7 @@ security = HTTPBasic()
 # Pydantic models
 class ContactRequest(BaseModel):
     name: str = Field(..., min_length=1, max_length=120)
-    email: str = Field(..., regex=r'^[a-zA-Z0-9.!#$%&\'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$')
+    email: str = Field(..., pattern=r'^[a-zA-Z0-9.!#$%&\'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$')
     message: str = Field(..., min_length=1, max_length=2000)
     consent: bool = Field(..., description="User must consent to data processing")
     _topic: Optional[str] = Field(default="", description="Honeypot field")
